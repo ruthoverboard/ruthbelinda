@@ -126,7 +126,14 @@ de que haya, la instalara para reemplazar la anterior.</p>
 <br>
 
 <p><b>3. Crea un grunt task para hacer deploy tu website a tu bucket en s3.</b></p>
-<p> </p>
+<p>Para hacer grunt deploy, es necesario instalar lo siguiente: </p>
+<p><i>npm i grunt-aws-s3 --save-dev</i></p>
+<p>Una vez teniendo esto, se crea un Gruntfile.js, que es lo que nos permetira hacer el deploy.
+Se tiene que crear un archivo .json que contenga los AWS Access Keys, pero este
+se tiene que excluir del commit para que nadie tenga acceso a ellas.</p>
+<p>Para hacer el deploy, desde la terminar se usa el comando:</p>
+<p><i>grunt deploy</i></p>
+<p><i><u>P.S. No me salio</u></i></p>
 <br>
 
 <p><b>4. Explica como funcionan los routes en angular y pon codigo de ejemplo.</b></p>
