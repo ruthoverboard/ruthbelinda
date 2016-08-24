@@ -1,0 +1,219 @@
+<!doctype html>
+<HTML>
+<head>
+  <meta charset="utf-8">
+  <title>Tarea 1</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+<h2>Esta es la primera tarea de Ruth</h2>
+<p><b>1.- Lee el siguiente articulo http://martinfowler.com/articles/microservices.html
+  y explica que significa "Microservices Architecture"</b></p>
+<p>Es una práctica para programar una aplicación como un conjunto de
+  pequeños "servicios". Normalmente se genera una aplicación en un mismo
+  lenguaje que corre desde un mismo servidor y que se divide en pequeñas
+  partes pero al estar dependiendo una de la otra al momento que se haga
+  un cambio se tiene que reestructurar toda la aplicación. Con
+  "microservices" esto no pasa, pues se programan en pequeños servicios
+  que funcionan de manera intependiente, pero que a la vez forman una
+  aplicación. Por cada servicio existe una base de datos, aunque puede
+  ser que dos serivicios compartan una base de datos; esto es con el fin
+  de que si se hacen cambios no se tenga que cambiar todo el programa,
+  sino que los cambios no afectarán de forma negativa a los otros servicios
+  que se tengan.</p>
+<br>
+
+<p><b>2. Explica cada linea del  archivo cc499-setup.sh</b></p>
+<p><i>echo "Start. We are about to setup the environment for your Cloud Compting class. Excited?"
+  echo ":) :) :) :) :) :) :) :) :) :) :) :) :) :)"</i> </p>
+<p>"echo" es usado para desplegar un string en consola, simplemente es
+  un mensaje pues no tiene valor alguno.</p>
+<br>
+<p><i>cd $HOME</i></p>
+<p>"cd" cambia la dirección de directorios, en este caso manda al Home.</p>
+<br>
+<p><i>mkdir Projects</i></p>
+<p><i>mkdir .aws</i></p>
+<p>"mkdir" permite crear directorios, en este caso se crea el directorio "Projects"
+  y ".aws" dentro del directorio "Home".</p>
+<br>
+<p><i>cd .aws</i></p>
+<p>Te lleva al nuevo directorio creado ".aws"</p>
+<br>
+<p><i>touch credentials</i></p>
+<p>"touch" permite crear archivos nuevos y vacíos, en este caso se llama credentials</p>
+<br>
+<p><i>cd..</i></p>
+<p>Este comando te regresa al directorio anterior.</p>
+<br>
+<p><i>sudo apt-get update</i></p>
+<p>Baja todos los paquetes de los repositorios y los actualiza para tener la información de las versiones más nuevas.
+  (sudo permite hacer cambios en el sistema)</p>
+<br>
+<p><i>sudo apt-get install -f</i></p>
+<p>Instala los paquetes que se han bajado con anteioridad.</p>
+<br>
+<p><i>echo " **************** Installing git  **************** "</i></p>
+<p>Un string que aparece en la terminal que no tiene valor. En este caso indica lo que se va a instalar</p>
+<br>
+<p><i>sudo apt-get install "git"</i></p>
+<p>Se instala el paquete de "git".</p>
+<br>
+<p><i>echo " **************** Installing NodeJs **************** "</i></p>
+<p>Indica que se va a instalar "NodeJS"</p>
+<br>
+<p><i>sudo apt-get install nodejs</i></p>
+<p><i>sudo apt-get install npm</i></p>
+<p>Instala los paquetes "nodejs" y "npm".</p>
+<br>
+<p><i>sudo ln -s /usr/bin/nodejs /usr/bin/node</i></p>
+<p>"ln -s" muestra los archivos que se encuentran en dicho directorio, en este caso serán los archivos de las carpetas de "nodejs" y "node".</p>
+<br>
+<p><i>echo " **************** Installing AWS CLI **************** "</i></p>
+<p>Indica que se instalará AWS CLI</p>
+<br>
+<p><i>sudo apt-get -y install python-pip</i></p>
+<p>En esta línea se va a conseguir e instalar "pip" que hace más fácil instalar paquetes que tengan que ver con Python.</p>
+<br>
+<p><i>sudo pip install --upgrade pip</i></p>
+<p>En esta linea se busca si existe una nueva version de "pip", en caso
+  de que haya, la instalara para reemplazar la anterior.</p>
+<br>
+<p><i>sudo pip install awscli --ignore-installed six</i></p>
+<p>Con esta línea se va a instalar "aswcli" pero se va a ignorar
+  "six" para evitar conflictos.</p>
+<br>
+<p><i>echo " **************** Installing yeoman **************** "</i></p>
+<p>Indica que se va a instalar "yeoman"</p>
+<br>
+<p><i>sudo npm install -g yo</i></p>
+<p>Se va a instalar en "npm" "yo" (yeoman).</p>
+<br>
+<p><i>echo " **************** Installing grunt **************** "</i></p>
+<p>Indica que se instalará "grunt".</p>
+<br>
+<p><i>sudo npm install -g grunt-cli</i></p>
+<p>Instala el cliente de grunt en "npm".</p>
+<br>
+<p><i>echo " **************** Installing serverless **************** "</i></p>
+<p>Indica que se va a instalar "serverless".</p>
+<br>
+<p><i>sudo npm install -g serverless</i></p>
+<p>Instala en "npm" "severless".</p>
+<br>
+<p><i>echo " **************** Installing dot net core **************** "</i></p>
+<p>Se va a instalar "dot net core".</p>
+<br>
+<p><i>sudo apt-get install curl libunwind8 gettext</i></p>
+<p>"apt-get install" es un manejador de paquetes el cual permite instalar software de un centro de software; en este caso "libunwind8" es una librería para determinar el "call-chain" de un programa; "gettext" es un framework para producir "multilingual messages", permite dar al usuario mensajes en su idioma. "curl" es un paquete que consiste en en una herramienta de línea de comando y una librería para transferir información usando sintaxis de URLs.</p>
+<br>
+<p><i>curl -sSL -o dotnet.tar.gz https://go.microsoft.com/fwlink/?LinkID=809130</i></p>
+<p>Indica que por medio de una conexcion (sSL) descargara un paquete desde dicha direccion de URL.</p>
+<br>
+<p><i>sudo mkdir -p /opt/dotnet && sudo tar zxf dotnet.tar.gz -C /opt/dotnet</i></p>
+<p></p>
+<br>
+<p><i>sudo ln -s /opt/dotnet/dotnet /usr/local/bin</i></p>
+<p>Muestra los archivos que se encuentren en las carpetas "dotnet" y "bin"</p>
+<br>
+
+
+
+<br>
+
+<p><b>3. Crea un grunt task para hacer deploy tu website a tu bucket en s3.</b></p>
+<p>Para hacer grunt deploy, es necesario instalar lo siguiente: </p>
+<p><i>npm i grunt-aws-s3 --save-dev</i></p>
+<p>Una vez teniendo esto, se crea un Gruntfile.js, que es lo que nos permetira hacer el deploy.
+  Se tiene que crear un archivo .json que contenga los AWS Access Keys, pero este
+  se tiene que excluir del commit para que nadie tenga acceso a ellas.</p>
+<p>Para hacer el deploy, desde la terminar se usa el comando:</p>
+<p><i>grunt deploy</i></p>
+<p><i><u>P.S. No me salio</u></i></p>
+<br>
+
+<p><b>4. Explica como funcionan los routes en angular y pon codigo de ejemplo.</b></p>
+<p>El Routing en AngularJS es lo que hace la pagina una Single Page
+  Application (SPA), esto es que no tienes que hacer reload de otra pagina
+  para poder ir a otra vista, simplemente lo guarda una vez al cargar toda
+  la pagina web. Para hacer esto es necesario usar ngRoute, he aqui un ejemplo:
+  <xmp><!DOCTYPE html>
+    <html>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>
+
+    <body ng-app="myApp">
+
+<p><a href="#/">Main</a></p>
+
+<a href="#red">Red</a>
+<a href="#green">Green</a>
+<a href="#blue">Blue</a>
+
+<div ng-view></div>
+
+<script>
+  var app = angular.module("myApp", ["ngRoute"]);
+  app.config(function($routeProvider) {
+    $routeProvider
+      .when("/", {
+        templateUrl : "main.htm"
+      })
+      .when("/red", {
+        templateUrl : "red.htm"
+      })
+      .when("/green", {
+        templateUrl : "green.htm"
+      })
+      .when("/blue", {
+        templateUrl : "blue.htm"
+      });
+  });
+</script>
+
+<p>Click on the links to navigate to "red.htm", "green.htm", "blue.htm", or back to "main.htm"</p>
+</body>
+</html> </xmp>
+Se necesita el module de AngularJS Route, que es el primer script del
+código; también se necesita la dependencia "ngRoute" para poder tener
+acceso al $routeProvider y con éste se configuran las diferentes rutas.</p>
+<p><b>5. Explica como puedes tener mas de un access key en tu computadora
+  y como puedes usar cada una. Provee codigo o ejemplo de configuracion.</b></p>
+<p>Para poder tener diferentes access keys, es cuestión de escribirlas en
+  el documento "credentials". Si vienen tenemos actualmente:</p>
+<p>[default]</p>
+<p>aws_access_key_id=ASDIHFAFNAOFNIGNFAK</p>
+<p>aws_secret_access_key=aIJDAMDNFfsfDANFIKNAEdadADadD</p>
+<br>
+<p>Debajo de esta parte podemos agregar otro access key:</p>
+<p>[default]</p>
+<p>aws_access_key_id=ASDIHFAFNAOFNIGNFAK</p>
+<p>aws_secret_access_key=aIJDAMDNFfsfDANFIKNAEdadADadD</p>
+<br>
+<p>[secondKey]</p>
+<p>aws_access_key_id=FHIAFHIKAFNIKGNISSN</p>
+<p>aws_secret_access_key=asiISFJIJFafSAFINHFafdfINSFNdA</p>
+<p>Para poder usar una o la otra se debe especificar el perfil que si quiere utilizar:</p>
+<p>aws s3 sync --acl=public-read --profile secondKey . s3://ruthbelinda</p>
+
+
+<br>
+
+<p><b>6. Explica que haras diferente este semestre basado en la
+  experciencia del semestre pasado.</b></p>
+<p>Lo primero que pense en cambiar fue mi equipo, pues es la clave para
+  hacer mejores cosas y es por eso que fui muy "picky" (bastante jaja) al
+  momento de decidir a quien permitr entrar al equipo que conformo con
+  Hernan. </p>
+<p>Ademas, tratare (si tratare porque no estoy segura de que lo haga
+  siempre) de poner siempre atencion, pero lo que si hare es preguntar.
+  Si es que no puedo hacer algo o simplemente no entiendo preguntare
+  hasta poder entenderlo. Eso significa que probablemente reciba muchos correos
+  de mi parte :D</p>
+
+</body>
+</HTML>

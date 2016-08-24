@@ -30,7 +30,22 @@ module.exports = function (grunt) {
 
     // Project settings
     yeoman: appConfig,
-
+    aws: grunt.file.readJSON( 'aws-keys.json' ),
+    aws_s3: {
+      options: {
+        accessKeyId: '<%= aws.AWSAccessKeyId %>',
+        secretAccessKey: '<%= aws.AWSSecretKey %>'
+      },
+      dist: {
+        options: {
+          bucket: 'ruthbelinda'
+        },
+        files: [
+          {
+            expand: true, cwd: 'dist/',src: [ '**' ],dest: '/' }
+        ]
+      }
+    },
     // Watches files for changes and runs tasks based on the changed files
     watch: {
       bower: {
@@ -220,7 +235,7 @@ module.exports = function (grunt) {
             }
           }
       }
-    }, 
+    },
 
     // Renames files for browser caching purposes
     filerev: {
@@ -480,4 +495,6 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
+
+  grunt.registerTask('deploy', 'aws_s3:dist');
 };
