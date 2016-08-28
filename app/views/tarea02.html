@@ -1,0 +1,292 @@
+<!DOCTYPE HTML>
+<head>
+  <meta charset="utf-8">
+  <title>Tarea 2</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+  <link rel="stylesheet" href="styles/main.css">
+  <style>
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+  </style>
+</head>
+<body>
+<p><b>1. Automatiza el deployment de tu Web Site usando Grunt.</b></p>
+<p>Para hacer Grunt Deploy a AWS se tiene que correr lo siguiente en la Terminal:</p>
+<p><i>npm i grunt-aws-s3 --save-dev</i></p>
+<p>Te crea (dentro de tu carpeta del proyecto) un archivo llamado:</p>
+<p><i>Gruntfile.js</i></p>
+<p>Además de este archivo, se debe de crear un .json llamado aws-keys.json para poner los Keys de AWS.</p>
+<xmp>
+  {
+  "AWSAccessKeyId": "SOMETHING PRIVATE",
+  "AWSSecretKey": "SOMETHING MORE PRIVATE"
+  }
+</xmp>
+<p><b>OJO: no subas el archivo a GitHub como yo!!!!!!!!</b></p>
+<p>Luego, tienes que agregar el siguiente código a tu Gruntfile.js en <i>grunt.initConfig</i>:</p>
+<xmp>
+  aws: grunt.file.readJSON( 'aws-keys.json' ),
+  aws_s3: {
+  options: {
+  accessKeyId: '<%= aws.AWSAccessKeyId %>',
+  secretAccessKey: '<%= aws.AWSSecretKey %>'
+  },
+  dist: {
+  options: {
+  bucket: 'YOUR BUCKET'
+  },
+  files: [
+  {
+  expand: true, cwd: 'dist/',src: [ '**' ],dest: '/' }
+  ]
+  }
+  },
+</xmp>
+<p>Y al final del archivo agregas el siguiente task:</p>
+<xmp>
+  grunt.registerTask('deploy', 'aws_s3:dist');
+</xmp>
+<p>Ahora desde la terminal ya puedes hacer Grunt Deploy :)</p>
+<br>
+<p><b>2. Crea un "Hello World" en NodeJs y crea un tutorial.</b></p>
+<p>Hice de dos formas un "Hello World" usando NodeJS. La primera fue desplegarlo en consola y el segundo lo despliego en el browser. Empecemos con el sencillo.</p>
+<div class="row">
+  <div class="col-lg-6">
+    <p><i>Desde consola</i></p>
+    <uL>
+      <li>1. Crea el archivo usando el editor vi:</li>
+      <p><i>vi hello.js</i></p>
+      <li>2. Una vez creado, escribe lo siguiente en el archivo.</li>
+      <p>P.S. Para comenzar a escribir en el editor presiona la tecla I (i mayuscula).</p>
+      <p><i>console.log("Hello World");</i></p>
+      <p>Presiona ESC y escribe :wq para guardar y salirte del editor.</p>
+      <li>3. Listo! Solamente falta correrlo en la terminal con el siguiente comando:</li>
+      <p><i>node hello.js</i></p>
+    </uL>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+  </div>
+  <div clas="col-lg-6">
+    <p><i>Para abrirlo en el Browser</i></p>
+    <ul>
+      <li>1. Crea el archivo usando el editor vi:</li>
+      <p><i>vi helloHTTP.js</i></p>
+      <li>2. Una vez creado, escribe lo siguiente en el archivo.</li>
+      <p>P.S. Para comenzar a escribir en el editor presiona la tecla I (i mayuscula).</p>
+      <xmp>
+        var http = require('http');
+
+        var server = http.createServer(function (request, response) {
+        response.writeHead(200, {"Content-Type": "text/plain"});
+        response.end("Hello World\n");
+        });
+        server.listen(8000);
+        console.log("Server running at http://127.0.0.1:8000/");
+      </xmp>
+      <p>Se crea la variable HTTP para indiciar el protocolo que usaremos.</p>
+      <p>Se crea un servidor y ponemos la respuesta que va a tener.</p>
+      <p>Se imprime en la terminal la direccion para verlo en el browser</p>
+      <p>Presiona ESC y escribe :wq para guardar y salirte del editor.</p>
+      <li>3. Listo! Solamente falta correrlo en la terminal con el siguiente comando:</li>
+      <p><i>node helloHTTP.js</i></p>
+      <p>Y abre el link que aparece en la terminal</p>
+    </ul>
+  </div>
+</div>
+<br>
+<p><b>3. Instala el aws sdk para NodeJs y crea un tutorial.</b></p>
+<ul>
+  <li>1. El primer paso es ir a Google.com y buscar lo siguiente:</li>
+  <p><i>AWS Nodejs SDK</i></p>
+  <p>Van a aparecer muchas páginas, pero entra a la siguiente de AWS:</p>
+  <p><i>http://docs.aws.amazon.com/AWSJavaScriptSDK/guide/node-intro.html</i></p>
+  <li>2. Una vez dentro, copia el comando para instalar el sdk desde la terminal:</li>
+  <p><i>npm install aws-sdk</i></p>
+  <li>3. Y listo! Ya puedes usar NodeJS para AWS. Para llamarlo en tus archivos no olvides poner lo siguiente:</li>
+  <p><i>var AWS = require('aws-sdk');</i></p>
+  <p>Y ocupas especificar la region:</p>
+  <p><i>AWS.config.region = 'us-west-2';</i></p>
+</ul>
+<br>
+<p><b>4. Crea un código en NodeJS que te diga la versión/fecha de tu Web Site en S3</b></p>
+<xmp>
+  var AWS = require('aws-sdk');
+  AWS.config.region = 'us-west-1';
+  var s3 = new AWS.S3();
+
+  var params = {
+    Bucket: 'ruthbelinda',
+    Key:'index.html'
+  };
+  s3.getObject(params, function(err, data) {
+    if (err) console.log(err, err.stack);
+    else     console.log("Ultima modificacion: ",data.LastModified);
+  });
+</xmp>
+
+<br>
+<p ><b>5. Lee y explica el post de <i>MicroservicesTrade-Offs</i> por Martin Fowler</b></p>
+<p align="justify">Usar Microservices tiene sus ventajas y desventajas, como cualquier otra tecnología. Entre sus ventajas se tiene: fuertes límites en los módulos,
+  deploy independiente, y diversidad en tecnología. Entre sus desventajas se encuentra: distribución, consistencia eventual, y complejidad operacional.
+  Como su nombre lo dice, los microservicios son diferentes programas (por ponerle así), que conforma un programa en general. Al dividir en diferentes
+  partes una aplicación, si una de esas partes falla no lo hará todo el sistema; o si se quiere cambiar una parte es solamente esa parte la que se debe
+  de entender, y no tener que ir por todo el código para ver qué conecta con qué y ver que si le mueves a algo otra parte deja de funcionar: esto es a
+  lo que se refiere tener fuertes límites en los módulos. Otra de sus ventajas es, como están divididos en diferentes partes, no se tiene que trabajar
+  con el mismo lenguaje de programación o con la misma tecnología. Por ejemplo, en mi trabajo programamos con modelo monolítico y es una friega el ver
+  que alguien le movió a tu código y ya no funciona, o que yo tengo una versión de un script y los demás otra. Es por esto que al usar Microservicios no
+  te metes con estas broncas. Otra de las ventajas es que cada servicio puede tener su propia base de datos; o al momento de hacer cambios no se tiene
+  que esperar a que otra parte del programa termine o le lleguen dichos cambios para poder mostrarlos en pantalla.</p>
+<p align="justify">Entre las desventajas se tiene que con un sistema monolítico con una sola operación se pueden actualizar muchas cosas de una sola vez, mientras que
+  con los microservicios se tienen que hacer muchas operaciones para poder guardar las actualizaciones. Y con esto los programadores tienen que estar
+  al pendiente de cada una de estas operaciones que hacen para poder llevar un rastro al momento de que haya un error poder encontrar en cuál operación
+  fue. Y básicamente, el estar usando sistemas distribuidos es una gran desventaja.</p>
+
+<br>
+<p><b>6. Crea una tabla de comparación entre AWS, Azure y Google Cloud.</b></p>
+<table>
+  <tr>
+    <th></th>
+    <th>AWS</th>
+    <th>Azure</th>
+    <th>Google Cloud</th>
+  </tr>
+  <tr>
+    <td>Año de lanzamiento</td>
+    <td>2006</td>
+    <td>2010</td>
+    <td>2011</td>
+  </tr>
+  <tr>
+    <td># de servicios</td>
+    <td>70</td>
+    <td>50</td>
+    <td>51*</td>
+  </tr>
+  <tr>
+    <td>Precios (por Storage)</td>
+    <td>1 TB/mes: $0.030000 por GB</td>
+    <td>100 TB/ mes: $0.024</td>
+    <td>$0.026 por GB</td>
+  </tr>
+  <tr>
+    <td>Regiones</td>
+    <td>13</td>
+    <td>26</td>
+    <td>15</td>
+  </tr>
+  <tr>
+    <td>Servicio cliente</td>
+    <td>Existen 4 planes.</td>
+    <td>Existen 5 planes.</td>
+    <td>Existen 4 planes.</td>
+  </tr>
+</table>
+<br>
+<p>Servicio al cliente de AWS</p>
+<p>Número de servicios al cliente: 12</p>
+<table>
+  <tr>
+    <th></th>
+    <th>Basic</th>
+    <th>Developer</th>
+    <th>Business</th>
+    <th>Enterprise</th>
+  </tr>
+  <tr>
+    <td>Precio</td>
+    <td>Gratis</td>
+    <td>Empenzando en 29 dólares al mes</td>
+    <td>Empezando en 100 dólares al mes</td>
+    <td>Empezando en 15 mil dólares al mes</td>
+  </tr>
+  <tr>
+    <td>Servicios</td>
+    <td>2</td>
+    <td>6</td>
+    <td>9</td>
+    <td>12</td>
+  </tr>
+</table>
+<br>
+<p>Servicio al cliente de Microsoft Azure</p>
+<p>Número de servicios al cliente: 13</p>
+<table>
+  <tr>
+    <th></th>
+    <th>Included</th>
+    <th>Developer</th>
+    <th>Standard</th>
+    <th>Professional direct</th>
+    <th>Premiere</th>
+  </tr>
+  <tr>
+    <td>Precio</td>
+    <td>Gratis</td>
+    <td>Empenzando en 29 dólares al mes</td>
+    <td>Empezando en 300 dólares al mes</td>
+    <td>Empezando en 1 mil dólares al mes</td>
+    <td>Se debe de contactar al equipo de Microsoft</td>
+  </tr>
+  <tr>
+    <td>Servicios</td>
+    <td>5</td>
+    <td>7 (soporte sólo en horas de trabajo)</td>
+    <td>7 (soporte las 24/7)</td>
+    <td>10</td>
+    <td>13</td>
+  </tr>
+</table>
+<br>
+<p>Servicio al cliente de Google Cloud</p>
+<p>Número de servicios al cliente: 13</p>
+<table>
+  <tr>
+    <th></th>
+    <th>Bronze</th>
+    <th>Silver</th>
+    <th>Gold</th>
+    <th>Platinum</th>
+  </tr>
+  <tr>
+    <td>Precio</td>
+    <td>Gratis</td>
+    <td>Empenzando en 150 dólares al mes</td>
+    <td>Empezando en 400 dólares al mes</td>
+    <td>Se debe de contactar al equipo de Google</td>
+  </tr>
+  <tr>
+    <td>Servicios</td>
+    <td>4</td>
+    <td>8</td>
+    <td>11</td>
+    <td>13</td>
+  </tr>
+</table>
+<br>
+<p><b>7. Lee al menos 5 secciones del Manifesto de Seth Godin: <i>Stop Stealing Dreams</i> y di lo que piensas sobre ello.</b></p>
+<p align="justify"><i>The evolution of dreams (59), Dreamers are the problem (60):</i> como dice Godin, en el siglo XX surgieron muchas ideas nuevas, muchos inventos, incluso la evolución de la música. Aquella generación tuvo muchos sueños y los pusieron en marcha, esto no quiere decir que nosotros no los tengamos, la diferencia es que no los ponemos en marcha, se quedan siendo solamente eso, sueños. Desde que entramos a la escuela nos dicen "tienen que pensar a qué se quieren dedicar cuando sean grandes" y siempre están las mismas respuestas "quiero ser bombero, quiero ser policía, quiero ser doctor". Tal vez le vamos cambiando conforme vamos creciendo, pero es muy raro escuchar "quiero inventar algo para solucionar este problema", no hay quien nos aliente a hacer o pensar de esa manera, siemplemente nos quieren preparar para poder tener un trabajo asegurado en lo que ya existe y hacer que la economía siga funcionando.</p>
+<br>
+<p align="justify"><i>Is it possible to teach willpower? (61), "When I grow up, I want to be an astronaut assistant"(15):</i>
+  puede que tengamos grandes sueños, pero normalmente los dejamos de lado porque no estamos acostumbrados a tener metas a largo plazo y es por esto que nos conformamos con un puesto mucho menor a lo que nos proponíamos. Cuando yo digo que quiero fundar mi estudio de videojuegos en Tijuana, es porque fundaré mi estudio de videojuegos en Tijuana. Claro, quiero ir a trabajar a otros lugares importantes en Estados Unidos, pero eso será por un corto tiempo, no planeo trabajar para alguien. Yo quiero ser mi propio jefe. Y esto no me lo enseñaron en la escuela, aprendí a tener fuerza de voluntad por mi cuenta (esto no quiere decir que algunos profesores no hayan influenciado en mí).</p>
+<br>
+<p align="justify"><i>Reading and writing (90): </i>¿saben dónde aprendí a superarme y a luchar por lo que quiero? En los mundos de fantasía de mis libros. Empecé a leer por diversión cuando estaba en secundaria, pero lo fortalecí estando en la prepa. Primero fueron 10 libros al año, hasta llegar a leer 30 libros por año (y se me hace poco). Sonará cliché, pero gracias a todos estos personajes me fui modelando hasta llegar a ser quien soy. EL leer te abre muchas puertas, te ayuda a ver las cosas con perspectivas diferentes; es por eso que es muy improtante el empezar a leer desde edad temprana.</p>
+<p align="justify">Esto me ha ayudado a tener ideas para mis videojuegos, para crear nuevas historias, y ese es el otro aspecto importante: el empezar a escribir. En mis tiempos libres me gusta poner en papel (en papel no en computadora) las ideas locas que vienen a mi cabeza para que no se me olviden. En la escuela si me llegaron a dar feedback de las cosas que escribía en Literatura, pero fue mínimo. De todas formas, me gusta escribir e invetar nuevas aventuras para mis queridos personajes.</p>
+</body>
