@@ -127,7 +127,8 @@
 </ul>
 <br>
 <p><b>4. Crea un código en NodeJS que te diga la versión/fecha de tu Web Site en S3</b></p>
-<xmp>
+<pre>
+  <code>
   var AWS = require('aws-sdk');
   AWS.config.region = 'us-west-1';
   var s3 = new AWS.S3();
@@ -140,7 +141,8 @@
     if (err) console.log(err, err.stack);
     else     console.log("Ultima modificacion: ",data.LastModified);
   });
-</xmp>
+  </code>
+</pre>
 
 <br>
 <p ><b>5. Lee y explica el post de <i>MicroservicesTrade-Offs</i> por Martin Fowler</b></p>

@@ -1,0 +1,217 @@
+<!DOCTYPE HTML>
+<head>
+  <meta charset="utf-8">
+  <title>Tarea 2</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+  <link rel="stylesheet" href="styles/main.css">
+  <style>
+    p{
+      text-align:justify;
+    }
+  </style>
+</head>
+<body>
+<p>1. Crea un script NodeJS que haga lo siguiente:</p>
+<div class="list-group">
+  <li>Descarga una imagen de S3.</li>
+  <li>Revisa si la metada key "Move" de la imagen es true.</li>
+  <li>Si es true, sube la imagen a s3://cc116-assgigment3/{MATRICULA}/image.png</li>
+</div>
+<p>En el S3Helper.js agregue la funcion downloadPhoto</p>
+<pre>
+  <xmp>
+    module.exports.downloadPhoto = function(bucket, key, stream){
+
+  	  var params = {
+	  	  Bucket: 'ruthbelinda',
+		    Key: 'Firenze.JPG'
+	    };
+
+	    var file = fs.createWriteStream(stream);
+	    s3.getObject(params).createReadStream().pipe(file);
+    };
+  </xmp>
+</pre>
+<p>Y este es todo el codigo del S3Helper.js</p>
+<pre>
+  <xmp>
+var AWS = require("aws-sdk");
+var s3 = new AWS.S3();
+var fs = require('fs');
+
+module.exports.saveInS3 = function(bucket, key, content, callback){
+  var params = {
+      Bucket: bucket,
+      Key: key,
+      Body: content,
+      ACL: "public-read",
+      Metadata: {Move: "true"} //metadata
+  };
+
+    s3.upload(params, function(error, data){
+      if(error){
+          callback(error);
+      }
+      else{
+          callback(null, data);
+      }
+  });
+};
+
+module.exports.downloadPhoto = function(bucket, key, stream){
+
+	var params = {
+		Bucket: 'ruthbelinda',
+		Key: 'Firenze.JPG'
+	};
+
+	var file = fs.createWriteStream(stream);
+	s3.getObject(params).createReadStream().pipe(file);
+};
+
+module.exports.readFromS3 = function(bucket, key, callback){
+    var params = {
+      Bucket: bucket,
+        Key: key
+    };
+
+    s3.getObject(params, function(error, data){
+        if(error){
+            callback(error);
+        }
+        else{
+            callback(null, data);
+        }
+    });
+};
+  </xmp>
+</pre>
+<p>Y desde uploadPhoto.js lo mando a llamar:</p>
+<pre>
+  <xmp>
+    var AWS = require('aws-sdk');
+var s3 = new AWS.S3();
+var fs = require('fs');
+var s3Helper = require("./S3Helper");
+var async = require("async");
+
+s3Helper.downloadPhoto("ruthbelinda", "Firenze.JPG", "FirenzePhoto.jpg");
+s3Helper.readFromS3("ruthbelinda", "Firenze.JPG", function(error, data){
+    if(error){
+        console.log(error);
+    }
+    else{
+        if(data.Metadata.move == 'true'){
+            var photo = fs.createReadStream('FirenzePhoto.jpg');
+            s3Helper.saveInS3('cc116-assignment3', '022383/FirenzePhoto.jpg', photo, function(error, data){
+                if(error){
+                    console.log(error);
+                }
+                else{
+                    console.log("Success");
+                }
+            });
+        }
+        else{
+            console.log("The Metadata move from the file is false");
+        }
+    }
+});
+  </xmp>
+</pre>
+<br>
+<p>2. Crea un script NodeJS que haga lo siguiente:</p>
+<div class="list-group">
+  <li>Obtenga la foto del día de la Nasa Astronomic.</li>
+  <li>Guarda la imagen en el local file system.</li>
+  <li>Imprime el título de la imagen. </li>
+  </div>
+<p>Gracias a StackOverflow y a Edgar, encontre que es factible usar request. Para ello
+se tiene que instalar primero usando lo siguiente:</p>
+<p><i>npm install request</i></p>
+<pre>
+  <xmp>
+    var nasaApi = "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY";
+    var request = require('request');
+    var fs = require('fs');
+    var writeStr = fs.createWriteStream('photoOfTheDay.jpg');
+
+    var params = {
+	    url: nasaApi,
+	    json: 'true'
+    };
+
+    request(params, function(err, opt, callback){
+	    if(err){
+		    console.log(err);
+	    }
+	    else{
+		    request(callback.url).pipe(writeStr);
+		    console.log(callback.title);
+		    console.log(callback.date);
+		    console.log(callback.url);
+	    }
+    });
+  </xmp>
+</pre>
+<p>Info sobre Request: <i>https://github.com/request/request</i></p>
+<br>
+<p>3. Implementa Google Analytics en tu web site personal.</p>
+<p>Para poder aplicar Google Analytics, primero tienes que crear una cuenta en:
+  https://analytics.google.com</p>
+<p>Después te va a especificar qué tipo quieres usar: para Web page o Mobile app
+  (en este caso es para un Web Page). Te pide un nombre de usuario, un nombre para
+  tu página web y el URL. En mi caso puse lo siguiente:</p>
+<div class="list-group">
+  <li>Username: ruthoverboard</li>
+  <li>WebPage Name: RuthBelinda</li>
+  <li>WebPage URL: http://ruthbelinda.s3-website-us-east-1.amazonaws.com/</li>
+</div>
+<p>Una vez hecho esto, te dará un ID con el cual podrás rastrear tu sitio web.
+  En esa misma página viene un SCRIPT que tiene que tener tu HTML code para hacerlo
+  funcionar. Este es el código:</p>
+<pre>
+  <xmp> <script>
+       !function(A,n,g,u,l,a,r){A.GoogleAnalyticsObject=l,A[l]=A[l]||function(){
+           (A[l].q=A[l].q||[]).push(arguments)},A[l].l=+new Date,a=n.createElement(g),
+         r=n.getElementsByTagName(g)[0],a.src=u,r.parentNode.insertBefore(a,r)
+       }(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-XXXXXX-X');
+       ga('send', 'pageview');
+  </script>
+  </xmp>
+</pre>
+<p> En el index.html de tu página viene ya escrito, solamente es cuestion de cambiar en
+  <i>ga('create', 'UA-XXXXXX-X')</i> por tu ID y listo. Desde tu página de Google Analytics
+  puedes ver todo lo que quieras sobre el tráfico que haya.</p>
+<br>
+<p>4. Lee y explica el siguiente artículo de Martin Fowler:
+  http://martinfowler.com/articles/richardsonMaturityModel.html</p>
+<p>El artículo habla sobre el sistema web-style REST. Lo explican usando un modelo creado
+  por Leonard Richardson; dicho modelo se divide en 4 niveles:</p>
+<div class="list-group">
+  <li>Level 0: The Swamp of POX</li>
+  <li>Level 1: Resources</li>
+  <li>Level 2: HTTP Verbs</li>
+  <li>Level 3: Hypermedia Controls</li>
+</div>
+<p>Nivel 0</p>
+<p>Para empezar, el modelo usa el protocolo HTTP como un sistema de transporte para interacciones remotas, pero sin usar mecanismos de la web. Se llama a un sistema para obtener información, y éste regresa una respuesta a la petición ya sea en un XML, JSON, YAML, etc.</p>
+<p>Nivel 1</p>
+<p>En este nivel en lugar de hacer un request a un servicio endpoint, se empieza a hablar a recursos individuales. En el nivel 0 se regresa la información de tal manera que se tienen que ir yendo más adentro de cada nodo para visualizar todo, mientras que hablandole a cada recurso, éste ya tiene toda la información necesaria cuando se le habla. Y en caso de que se quieran agregaar cosas o hacer modificaciones, simplemente se le habla a ese recurso sin tener que modificar todo lo demás. Divide el recurso endpoint es otros más pequeños para que sea más sencillo munipularlo.</p>
+<p>Nivel 2</p>
+<p>Este nivel se encarga de usar la sintaxis de HTTP como debe de ser. Por ejemplo, HTTP define GET como una operación segura, pues simplemente jala información, no la puede modificar. En pocas palabras, en este nivel es donde se introduce un conjunto de verbos o palabras reservadas estándar que usa HTTP para que las funciones que hagan lo mismo usen solamente ese verbo, así remueve las variaciones que no son necesarias.</p>
+<p>Nivel 3</p>
+<p>En este nivel se introduce el HATEOAS (Hypertext As The Engine Of Application State). Esto hace que en cada campo del XML (o como regrese la respuesta) se guarda un campo con un URI que indica a dónde debe de dirigirse para realizar la operación que se pide. Una de las ventajas de usar esto, es que el servidor puede cambiar los esquemas de URI sin quebrar los clientes, así como ayudar a los developers a explorar el protocolo.</p>
+<br>
+<p>5. Explica por qué Cloud Computing es importante.</p>
+<p>Porque puedes consultar información en cualquier dispositivo en diferentes lugare sin necesidad de tener la información física. Basicamente, Cloud Computing está en todos lados actualmente, desde revisar nuestro salgo en el banco por medio de su app o el portal, hasta el servicio de películas que la mayoría usamos que se llama Netflix. Cloud Computing es flexible, te cobran por lo que usas; sirve para hacer backups de los sistemas; puedes trabajar desde donde sea siempre y cuando tengas conexión a internet; no importa que a tu computadora le pase algo, tu información estará almacenada en la nube.</p>
+<p>Incluso usamos estos servicios de la nube cuando usamos los drives, ya sea el de Google Drive, iCloud de Apple o Dropbox. Ya no necesitamos de un dispositivo físico para transportar nuestros archivos, y además nos ayudan a liberar espacio. Por ejemplo, con Dropbox hago backup de mis fotos del celular automaticamente, y así puedo borrar fotos que ya no necesite en mi celular pero con la seguridad de que estarán alamceandas en un sitio al cual podré ingresar desde donde sea.</p>
+<p><i>Fuente: https://www.salesforce.com/uk/blog/2015/11/why-move-to-the-cloud-10-benefits-of-cloud-computing.html</i></p>
+<br>
+<p>6. Explica qué cambiarías de la clase y por qué.</p>
+<p>La verdad cambiaría todo. Nah, no es cierto. Lo único que me gustaría cambiar es que se fuera un poco más lento al momento de escribir código, porque trato de ir a la par y copiar el código, pero al mismo tiempo trato de entender lo qué hace ya que es un lenguaje nuevo para mí.</p>
+<p>Fuera de eso no cambiaría nada, iba a pedirle por este medio el cambiar la tarea de la semana que viene para un día más, pero ya se lo dije en clase y se lo agradezco</p>
+</body>
