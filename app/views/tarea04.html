@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<head>
+  <meta charset="utf-8">
+  <title>Tarea 4</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+<p><b>1. Implementa el algoritmo merge sort On-Prem con un arreglo de integer de 1,000,000 de elementos.</b></p>
+<pre>
+    var array =[];
+
+for(var i = 0; i &lt; 1000000; i++){
+	array.push(Math.round(Math.random() * 1000));
+}
+
+console.log("The initial array is: " + array);
+var sortedArray = mergeSort(array);
+console.log("The sorted array is: " + sortedArray);
+
+function mergeSort(arr){
+	if(arr.length &lt; 2){
+		return arr;
+	}
+
+	var middle = Math.floor(arr.length / 2);
+	var left = arr.slice(0, middle);
+	var right = arr.slice(middle, arr.length);
+
+	return merge(mergeSort(left), mergeSort(right));
+}
+
+function merge(left, right){
+	var resultArray = [];
+	var indxLft = 0;
+	var indxRght = 0;
+
+	while(indxLft &lt; left.length && indxRght &lt; right.length){
+		if(left[0] &lt;= right[0]){
+			resultArray.push(left.shift());
+		}
+		else{
+			resultArray.push(right.shift());
+		}
+	}
+
+	while(left.length){
+		resultArray.push(left.shift());
+	}
+	while(right.length){
+		resultArray.push(right.shift());
+	}
+
+	return resultArray;
+}
+</pre>
+<br>
+
+<br>
+<p><b>2. Haz benchmark de la implementacion On-Prem.</b></p>
+<p>Para ver el tiempo en el que tarda, usamos el siguiente comando: </p>
+<pre>time node mergeSort.js</pre>
+<p>Y el resultado es el siguiente:</p>
+<p>Arreglo de 10: 0m0.166s</p>
+<p>Arreglo de 100: 0m0.198s</p>
+<p>Arreglo de 1000: 0m0.190s</p>
+<p>Arreglo de 1000000: 14m23.383s</p>
+
+<br>
+<p><b>3. Implemente el algoritmo merge sort con un arreglo d 1,000,000 de elementos en un aproche paralelo usando la arquitectura de micro-servicios en AWS.</b></p>
+
+<br>
+<p><b>4. Haz benchmark en la implementacion de AWS.</b></p>
+
+
+</body>
+
