@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
+<h2>Tarea 4</h2>
+<h3>Trabaje con Hernan Medina</h3>
 <p><b>1. Implementa el algoritmo merge sort On-Prem con un arreglo de integer de 1,000,000 de elementos.</b></p>
 <pre>
     var array =[];
@@ -69,11 +71,101 @@ function merge(left, right){
 <p>Arreglo de 1000000: 14m23.383s</p>
 
 <br>
-<p><b>3. Implemente el algoritmo merge sort con un arreglo d 1,000,000 de elementos en un aproche paralelo usando la arquitectura de micro-servicios en AWS.</b></p>
+<p><b>3. Implemente el algoritmo merge sort con un arreglo de 1,000,000 de elementos en un aproche paralelo usando la arquitectura de micro-servicios en AWS.</b></p>
+<p>Creamos un API Geatway llamado HRMergeSort, en donde tenemos dos lambdas llamadas HRMerge y HRDivide.</p>
+<p>event.json de HRMerge</p>
+<pre>
+  {
+  "left":[],
+  "right":[]
+}
+</pre>
+<p><i>HRMerge</i></p>
+<pre>
+  'use strict';
 
+module.exports.handler = function(event, context, cb) {
+  function merge(){
+    var resultArray = [];
+    var indxLft = 0;
+    var indxRght = 0;
+    //var left2 = event[0];
+    //var right2 = event[1];
+
+    while(indxLft &lt; event.left.length && indxRght &lt; event.right.length){
+      if(event.left[0] &lt;= event.right[0]){
+        resultArray.push(event.left.shift());
+      }
+      else{
+        resultArray.push(event.right.shift());
+      }
+    }
+
+    while(event.left.length){
+      resultArray.push(event.left.shift());
+    }
+    while(event.right.length){
+      resultArray.push(event.right.shift());
+    }
+
+    context.succeed(resultArray);
+  }
+};
+
+</pre>
+<p><i>HRDivide</i></p>
+<pre>
+  'use strict';
+
+module.exports.handler = function(event, context, cb) {
+  var array =[];
+  var AWS = require('aws-sdk');
+  var lambda = new AWS.Lambda({
+    region: 'us-east-1'
+  });
+
+  for(var i = 0; i &lt; 10; i++){
+    array.push(Math.round(Math.random() * 1000));
+  }
+
+  console.log("The initial array is: " + array);
+  var sortedArray = mergeSort(array);
+
+
+  function mergeSort(arr){
+    if(arr.length &lt; 2){
+      return arr;
+    }
+
+    var middle = Math.floor(arr.length / 2);
+    var left = arr.slice(0, middle);
+    var right = arr.slice(middle, arr.length);
+
+    var params ={
+      FunctionName: 'HRMergeSort-HRMerge',
+      InvokeArgs: JSON.stringify(left, right)
+    };
+
+    lambda.invokeAsync(params, function(err, data){
+      if(err){
+        console.log(err, err.stack);
+      }
+      else{
+        context.succeed(data.InvokeArgs);
+        console.log("The sorted array is: " + data.InvokeArgs);
+      }
+    })
+  }
+};
+</pre>
+<p>En la documentacion de AWS leimos que hay dos formas de hacer el invoke, ya sea lambda.invoke o lambda.invokeAsync. Quisimos utilizar el primero,
+pero nos marca que lambda.function no es una funcion, y al utilizar lambda.invokeAsync nos regresa "undefined", pero regresa como status 202,
+esto quiere decir que si funciona, de acuerdo a la documentacion de AWS.</p>
 <br>
 <p><b>4. Haz benchmark en la implementacion de AWS.</b></p>
-
-
+<p>Aunque no regrese el array en orden, sale este mensaje: 1946126 byte payload is too large for the Event invocation type (limit 131072 bytes)</p>
+<p> Pero haciendolo con un arreglo de 10, el tiempo es: 2108.65 ms</p>
+<p>100: 5729.52 ms</p>
+<p>1000: 1005.24 ms</p>
 </body>
 
