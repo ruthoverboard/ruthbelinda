@@ -54,6 +54,26 @@ angular
         controller: 'Tarea04Ctrl',
         controllerAs: 'tarea04'
       })
+      .when('/tarea05', {
+        templateUrl: 'views/tarea05.html',
+        controller: 'Tarea05Ctrl',
+        controllerAs: 'tarea05'
+      })
+      .when('/tarea06', {
+        templateUrl: 'views/tarea06.html',
+        controller: 'Tarea06Ctrl',
+        controllerAs: 'tarea06'
+      })
+      .when('/tarea07', {
+        templateUrl: 'views/tarea07.html',
+        controller: 'Tarea07Ctrl',
+        controllerAs: 'tarea07'
+      })
+      .when('/tarea08', {
+        templateUrl: 'views/tarea08.html',
+        controller: 'Tarea08Ctrl',
+        controllerAs: 'tarea08'
+      })
       .otherwise({
         redirectTo: '/'
       });
