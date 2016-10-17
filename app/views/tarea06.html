@@ -1,1 +1,21 @@
-<p>This is the tarea06 view.</p>
+<!DOCTYPE HTML>
+<head>
+  <meta charset="utf-8">
+  <title>Tarea 5</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+  <link rel="stylesheet" href="styles/main.css">
+  <style>
+    p{
+      text-align:justify;
+    }
+  </style>
+</head>
+<body>
+<p><b>1. Puedes envidar mensajes a nuestro channel projectlemon en slack!.</b></p>
+Mensaje:<input type="text" ng-model="mensaje">
+<input type="button" ng-click="mandaTexto()" value="Enviar!!">
+<p>{{texto}}</p>
+
+</body>

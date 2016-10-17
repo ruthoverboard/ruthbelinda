@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc function
- * @name ruthbelindaApp.controller:Tarea07Ctrl
+ * @name ruthbelindaApp.controller:WeathersecureCtrl
  * @description
- * # Tarea07Ctrl
+ * # WeathersecureCtrl
  * Controller of the ruthbelindaApp
  */
 angular.module('ruthbelindaApp')
-  .controller('Tarea07Ctrl', function ($scope, $http) {
+  .controller('WeathersecureCtrl', function ($scope, $http) {
 
 
     $scope.login = function(valid){
@@ -18,7 +18,7 @@ angular.module('ruthbelindaApp')
         "password": "limonada"
       };
 
-      credentials.username = valid? "ruthoverboard": "foo;";
+      credentials.username = valid? "ruthoverboard": "foo;"
 
       $http.post(url, credentials)
         .success(function(data){
@@ -27,34 +27,11 @@ angular.module('ruthbelindaApp')
         .error(function(error){
           alert(error);
         });
+
+
+
     };
 
-    $scope.getWeather = function(){
-      var info = {Cities: $scope.cities.split(",")};
-      console.log(info);
-      var url = "https://i545hvxm8e.execute-api.us-east-1.amazonaws.com/dev/weather-secure";
-
-      $http.put(url, info, {headers:{
-        "Authorization": localStorage.getItem("token")
-      }})
-        .success(function(info){
-          $scope.cityWeather = info;
-        })
-        .error(function(error){
-          alert(error);
-        });
-    };
-
-    $scope.getAverage = function(){
-      var url = "https://i545hvxm8e.execute-api.us-east-1.amazonaws.com/dev/weatherStats";
-
-        $http.get(url, {headers:{
-          'Authorization': localStorage.getItem("token")
-        }})
-          .then(function(avrg){
-            $scope.avrgCities = JSON.stringify(avrg.data);
-          })
-    };
 
 
     this.awesomeThings = [
@@ -62,4 +39,17 @@ angular.module('ruthbelindaApp')
       'AngularJS',
       'Karma'
     ];
+    $scope.getWeather = function(){
+      var info = {Cities: $scope.cities.split(",")};
+      console.log(info);
+      var url = "https://i545hvxm8e.execute-api.us-east-1.amazonaws.com/dev/weather-secure";
+
+      $http.put(url, info)
+        .success(function(info){
+          $scope.cityWeather = info;
+        })
+        .error(function(error){
+          alert(error);
+        })
+    }
   });

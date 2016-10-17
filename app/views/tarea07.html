@@ -1,1 +1,25 @@
-<p>This is the tarea07 view.</p>
+<h2>Weather Secure</h2>
+
+<div>
+  Escribe las ciudades:<input type="text" ng-model="cities">
+  <p>
+
+  </p>
+</div>
+
+
+<input type="button" ng-click="getWeather()" value="Get Clima!">
+<input type="button" ng-click="login(true)" value="Login valido">
+<input type="button" ng-click="login(false)" value="Login invalido">
+<input type="button"ng-click="getAverage()" value="Promedio de clima!">
+<p>{{cityWeather}}</p>
+<p>Promedio: {{avrgCities}}</p>
+<br>
+<br>
+<p>Cuando le puse el Authorizer a al API del promedio de clima de las ciudades, me salio lo siguiente:</p>
+<img src="https://scontent-dft4-2.xx.fbcdn.net/v/t35.0-12/14725167_1431044610243426_895387868_o.png?oh=7ba07b9bab486703b29639e43ca12422&oe=580656E1" width="1000px" height="500px">
+<br>
+<p>Cuando mando a llamar la funcin del Login, arroja lo siguiente:</p>
+<img src="https://scontent-dft4-2.xx.fbcdn.net/v/t35.0-12/14689773_1431068216907732_1697673512_o.png?oh=248537bbe046380d6eca22feca8fd148&oe=580611B9" width="1000px" height="500px">
+<p>El error que me arroja es el 401.</p>
+<p>Esto fue porque tenia el Authorizer en el end point equivocado.</p>
